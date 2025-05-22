@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Package, Trash2 } from 'lucide-react';
+import { Package, Trash2, Plus } from 'lucide-react';
 import { useProductStore } from '@/store/productStore';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +21,19 @@ import {
 } from "@/components/ui/dialog";
 
 const AdminProducts = () => {
-  const { products, updateProduct, deleteProduct } = useProductStore();
+  const { products, updateProduct, deleteProduct, addProduct } = useProductStore();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [newProduct, setNewProduct] = useState<Partial<Product>>({
+    name: '',
+    price: 0,
+    category: '',
+    stockQuantity: 1,
+    inStock: true,
+    image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80',
+    rating: 4,
+  });
   
   const handleEdit = (product: Product) => {
     setEditingProduct({...product});
@@ -76,6 +86,41 @@ const AdminProducts = () => {
     }
   };
 
+  const openAddProductDialog = () => {
+    setIsAddingProduct(true);
+  };
+
+  const closeAddProductDialog = () => {
+    setIsAddingProduct(false);
+    setNewProduct({
+      name: '',
+      price: 0,
+      category: '',
+      stockQuantity: 1,
+      inStock: true,
+      image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80',
+      rating: 4,
+    });
+  };
+
+  const handleNewProductChange = (field: keyof Product, value: any) => {
+    setNewProduct({
+      ...newProduct,
+      [field]: value
+    });
+  };
+
+  const handleAddProduct = () => {
+    if (!newProduct.name || newProduct.price === undefined) {
+      toast.error("Product name and price are required.");
+      return;
+    }
+    
+    addProduct(newProduct as Product);
+    toast.success(`${newProduct.name} has been added successfully.`);
+    closeAddProductDialog();
+  };
+
   return (
     <div className="container mx-auto py-16 px-4">
       <div className="flex items-center justify-between mb-8">
@@ -83,9 +128,19 @@ const AdminProducts = () => {
           <Package className="mr-2 h-6 w-6" />
           Product Management
         </h1>
-        <Link to="/admin">
-          <Button variant="outline">Back to Admin</Button>
-        </Link>
+        <div className="flex gap-3">
+          <Button 
+            onClick={openAddProductDialog} 
+            variant="default" 
+            className="flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Add Product
+          </Button>
+          <Link to="/admin">
+            <Button variant="outline">Back to Admin</Button>
+          </Link>
+        </div>
       </div>
       
       <Card>
@@ -220,6 +275,89 @@ const AdminProducts = () => {
           <DialogFooter>
             <Button variant="outline" onClick={closeDeleteDialog}>Cancel</Button>
             <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Product Dialog */}
+      <Dialog open={isAddingProduct} onOpenChange={closeAddProductDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Product</DialogTitle>
+            <DialogDescription>
+              Fill in the details to add a new product to your inventory.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Name *</label>
+              <Input 
+                value={newProduct.name || ''} 
+                onChange={(e) => handleNewProductChange('name', e.target.value)}
+                placeholder="Product name"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Price (MAD) *</label>
+              <Input 
+                type="number"
+                value={newProduct.price || ''} 
+                onChange={(e) => handleNewProductChange('price', Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Category</label>
+              <Input 
+                value={newProduct.category || ''} 
+                onChange={(e) => handleNewProductChange('category', e.target.value)}
+                placeholder="Category (e.g. boys, girls, baby)"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description</label>
+              <Input 
+                value={newProduct.description || ''} 
+                onChange={(e) => handleNewProductChange('description', e.target.value)}
+                placeholder="Product description"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Image URL</label>
+              <Input 
+                value={newProduct.image || ''} 
+                onChange={(e) => handleNewProductChange('image', e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Stock Quantity</label>
+              <Input 
+                type="number"
+                value={newProduct.stockQuantity || 0} 
+                onChange={(e) => handleNewProductChange('stockQuantity', Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <Switch 
+                checked={newProduct.inStock || false} 
+                onCheckedChange={(checked) => handleNewProductChange('inStock', checked)}
+              />
+              <label className="text-sm font-medium">In Stock</label>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={closeAddProductDialog}>Cancel</Button>
+            <Button onClick={handleAddProduct}>Add Product</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

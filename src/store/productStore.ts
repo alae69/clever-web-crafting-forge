@@ -8,6 +8,7 @@ interface ProductStore {
   setProducts: (products: Product[]) => void;
   updateProduct: (updatedProduct: Product) => void;
   deleteProduct: (productId: number) => void;
+  addProduct: (product: Partial<Product>) => void;
 }
 
 // Initial products from our store with stock quantity
@@ -165,6 +166,29 @@ export const useProductStore = create<ProductStore>()(
       deleteProduct: (productId) => set((state) => ({
         products: state.products.filter(product => product.id !== productId)
       })),
+      addProduct: (product) => set((state) => {
+        // Generate a new ID (find the highest existing ID and add 1)
+        const newId = state.products.length > 0 
+          ? Math.max(...state.products.map(p => p.id)) + 1 
+          : 1;
+        
+        const newProduct: Product = {
+          id: newId,
+          name: product.name || 'New Product',
+          price: product.price || 0,
+          image: product.image || 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80',
+          category: product.category || '',
+          description: product.description || '',
+          inStock: product.inStock !== undefined ? product.inStock : true,
+          stockQuantity: product.stockQuantity || 0,
+          rating: product.rating || 4,
+          isNew: product.isNew || false,
+          isSale: product.isSale || false,
+          originalPrice: product.originalPrice,
+        };
+        
+        return { products: [...state.products, newProduct] };
+      }),
     }),
     {
       name: 'product-storage', // unique name for the localStorage key
