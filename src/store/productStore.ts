@@ -7,6 +7,7 @@ interface ProductStore {
   products: Product[];
   setProducts: (products: Product[]) => void;
   updateProduct: (updatedProduct: Product) => void;
+  deleteProduct: (productId: number) => void;
 }
 
 // Initial products from our store with stock quantity
@@ -160,6 +161,9 @@ export const useProductStore = create<ProductStore>()(
         products: state.products.map(product => 
           product.id === updatedProduct.id ? updatedProduct : product
         )
+      })),
+      deleteProduct: (productId) => set((state) => ({
+        products: state.products.filter(product => product.id !== productId)
       })),
     }),
     {

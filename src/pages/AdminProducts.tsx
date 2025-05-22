@@ -5,16 +5,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Package } from 'lucide-react';
+import { Package, Trash2 } from 'lucide-react';
 import { useProductStore } from '@/store/productStore';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Product } from '@/components/ProductCard';
 import { Switch } from '@/components/ui/switch';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const AdminProducts = () => {
-  const { products, updateProduct } = useProductStore();
+  const { products, updateProduct, deleteProduct } = useProductStore();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
   
   const handleEdit = (product: Product) => {
     setEditingProduct({...product});
@@ -24,10 +33,7 @@ const AdminProducts = () => {
     if (editingProduct) {
       updateProduct(editingProduct);
       setEditingProduct(null);
-      toast({
-        title: "Product updated",
-        description: `${editingProduct.name} has been updated successfully.`,
-      });
+      toast.success(`${editingProduct.name} has been updated successfully.`);
     }
   };
   
@@ -51,10 +57,23 @@ const AdminProducts = () => {
       stockQuantity: !product.inStock ? (product.stockQuantity || 1) : 0
     };
     updateProduct(updatedProduct);
-    toast({
-      title: updatedProduct.inStock ? "Product is now in stock" : "Product is now out of stock",
-      description: `${product.name} has been updated.`
-    });
+    toast.success(updatedProduct.inStock ? "Product is now in stock" : "Product is now out of stock");
+  };
+
+  const openDeleteDialog = (product: Product) => {
+    setProductToDelete(product);
+  };
+
+  const closeDeleteDialog = () => {
+    setProductToDelete(null);
+  };
+
+  const confirmDelete = () => {
+    if (productToDelete) {
+      deleteProduct(productToDelete.id);
+      toast.success(`${productToDelete.name} has been deleted.`);
+      closeDeleteDialog();
+    }
   };
 
   return (
@@ -104,9 +123,18 @@ const AdminProducts = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Button variant="outline" size="sm" onClick={() => handleEdit(product)}>
-                        Edit
-                      </Button>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => handleEdit(product)}>
+                          Edit
+                        </Button>
+                        <Button 
+                          variant="destructive" 
+                          size="sm" 
+                          onClick={() => openDeleteDialog(product)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -116,6 +144,7 @@ const AdminProducts = () => {
         </CardContent>
       </Card>
       
+      {/* Edit Product Dialog */}
       {editingProduct && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md">
@@ -178,6 +207,22 @@ const AdminProducts = () => {
           </Card>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={Boolean(productToDelete)} onOpenChange={closeDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete "{productToDelete?.name}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={closeDeleteDialog}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmDelete}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
