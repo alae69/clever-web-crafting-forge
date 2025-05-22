@@ -19,6 +19,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AdminProducts = () => {
   const { products, updateProduct, deleteProduct, addProduct } = useProductStore();
@@ -34,6 +41,17 @@ const AdminProducts = () => {
     image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80',
     rating: 4,
   });
+  
+  const categories = [
+    { value: "boys", label: "Boys" },
+    { value: "girls", label: "Girls" },
+    { value: "baby", label: "Baby" },
+    { value: "accessories", label: "Accessories" },
+    { value: "outerwear", label: "Outerwear" },
+    { value: "footwear", label: "Footwear" },
+    { value: "seasonal", label: "Seasonal" },
+    { value: "school", label: "School" },
+  ];
   
   const handleEdit = (product: Product) => {
     setEditingProduct({...product});
@@ -226,10 +244,21 @@ const AdminProducts = () => {
                 
                 <div>
                   <label className="block mb-2 text-sm font-medium">Category</label>
-                  <Input 
+                  <Select 
                     value={editingProduct.category || ''} 
-                    onChange={(e) => handleEditChange('category', e.target.value)}
-                  />
+                    onValueChange={(value) => handleEditChange('category', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div>
@@ -311,11 +340,21 @@ const AdminProducts = () => {
             
             <div className="space-y-2">
               <label className="text-sm font-medium">Category</label>
-              <Input 
+              <Select 
                 value={newProduct.category || ''} 
-                onChange={(e) => handleNewProductChange('category', e.target.value)}
-                placeholder="Category (e.g. boys, girls, baby)"
-              />
+                onValueChange={(value) => handleNewProductChange('category', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {category.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="space-y-2">

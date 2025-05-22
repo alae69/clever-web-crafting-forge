@@ -11,18 +11,22 @@ const CategoryFeature = () => {
   const fallbackImages = {
     girls: "https://placehold.co/800x600/e9d8c4/333333?text=Girls+Collection",
     boys: "https://placehold.co/800x600/c4d8e9/333333?text=Boys+Collection",
-    baby: "https://placehold.co/800x600/d8e9c4/333333?text=Baby+Collection"
+    baby: "https://placehold.co/800x600/d8e9c4/333333?text=Baby+Collection",
+    accessories: "https://placehold.co/800x600/e9c4d8/333333?text=Accessories",
+    outerwear: "https://placehold.co/800x600/c4e9d8/333333?text=Outerwear",
   };
 
   // Image state to handle failed loads
   const [images, setImages] = useState({
     girls: "https://images.unsplash.com/photo-1476234251651-f353703a034d?auto=format&fit=crop&w=800&q=80",
     boys: "https://images.unsplash.com/photo-1611256243212-48a16a558a4c?auto=format&fit=crop&w=800&q=80",
-    baby: "https://images.unsplash.com/photo-1522771930-78848d9293e8?auto=format&fit=crop&w=800&q=80"
+    baby: "https://images.unsplash.com/photo-1522771930-78848d9293e8?auto=format&fit=crop&w=800&q=80",
+    accessories: "https://images.unsplash.com/photo-1566454419290-57a0af3a0b6a?auto=format&fit=crop&w=800&q=80",
+    outerwear: "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&w=800&q=80"
   });
 
   // Handle image error by replacing with fallback
-  const handleImageError = (category: 'girls' | 'boys' | 'baby') => {
+  const handleImageError = (category: 'girls' | 'boys' | 'baby' | 'accessories' | 'outerwear') => {
     setImages(prev => ({
       ...prev,
       [category]: fallbackImages[category]
@@ -64,6 +68,22 @@ const CategoryFeature = () => {
       link: "/baby",
       category: 'baby' as const
     },
+    {
+      id: 4,
+      title: t('accessories') || 'Accessories',
+      subtitle: 'Complete the Look',
+      image: images.accessories,
+      link: "/products?category=accessories",
+      category: 'accessories' as const
+    },
+    {
+      id: 5,
+      title: 'Outerwear',
+      subtitle: 'Stay Warm & Stylish',
+      image: images.outerwear,
+      link: "/products?category=outerwear",
+      category: 'outerwear' as const
+    }
   ];
 
   return (
@@ -77,7 +97,7 @@ const CategoryFeature = () => {
           <p className="text-xl text-morocco-navy/70 max-w-2xl mx-auto">{t('discoverLatestAdditions')}</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {categories.map((category) => (
             <Link 
               to={category.link} 
@@ -95,7 +115,7 @@ const CategoryFeature = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-morocco-navy/80 via-morocco-navy/30 to-transparent flex flex-col justify-end p-8">
                 <div className="text-white transform transition-transform duration-300 group-hover:translate-y-[-10px]">
                   <span className="text-sm text-white/80 font-medium block mb-2">{category.subtitle}</span>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-3">{category.title}</h3>
+                  <h3 className="text-xl md:text-2xl font-bold mb-3">{category.title}</h3>
                   <div className="flex items-center text-white space-x-2 font-medium opacity-90 group-hover:opacity-100">
                     <span>{t('shopNow')}</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

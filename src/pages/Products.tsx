@@ -27,6 +27,18 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
   
+  const categories = [
+    { value: "all", label: t('allCategories') },
+    { value: "boys", label: t('boys') },
+    { value: "girls", label: t('girls') },
+    { value: "baby", label: t('baby') },
+    { value: "accessories", label: t('accessories') },
+    { value: "outerwear", label: "Outerwear" },
+    { value: "footwear", label: "Footwear" },
+    { value: "seasonal", label: "Seasonal" },
+    { value: "school", label: "School" },
+  ];
+  
   // Apply search, filters and sorting on mount and when dependencies change
   useEffect(() => {
     let result = [...allProducts];
@@ -111,11 +123,11 @@ const Products = () => {
                     <SelectValue placeholder={t('category')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('allCategories')}</SelectItem>
-                    <SelectItem value="boys">{t('boys')}</SelectItem>
-                    <SelectItem value="girls">{t('girls')}</SelectItem>
-                    <SelectItem value="baby">{t('baby')}</SelectItem>
-                    <SelectItem value="accessories">{t('accessories')}</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
