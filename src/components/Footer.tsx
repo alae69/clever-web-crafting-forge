@@ -1,155 +1,142 @@
+
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, X } from 'lucide-react';
-import { useSocialStore } from '@/store/socialStore';
-import { useLanguageStore } from '@/store/languageStore';
+import { MapPin, Mail, Phone, Facebook, Instagram, Twitter } from 'lucide-react';
 const Footer = () => {
-  const year = new Date().getFullYear();
-  const {
-    socialLinks
-  } = useSocialStore();
-  const {
-    t
-  } = useLanguageStore();
-  return <footer className="bg-morocco-navy text-white pt-20">
-      {/* Decorative pattern */}
-      <div className="relative">
-        <div className="absolute inset-0 moroccan-pattern-bg opacity-10"></div>
-        
-        <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-16">
-            {/* Logo and about */}
-            <div className="lg:col-span-5">
-              <Link to="/" className="flex items-center">
-                <span className="font-heading text-3xl font-bold tracking-tight">
-                  <span className="text-morocco-terracotta">Najih</span>
-                  <span className="text-white">Kids</span>
-                </span>
-              </Link>
-              <p className="mt-6 text-gray-300 max-w-lg text-lg leading-relaxed">
-                Premium Moroccan-inspired children's clothing that combines 
-                traditional craftsmanship with modern design for comfort and style.
-              </p>
-              <div className="flex space-x-5 mt-8">
-                {socialLinks.instagram && <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-morocco-terracotta transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10">
-                    <Instagram className="h-6 w-6" />
-                  </a>}
-                {socialLinks.facebook && <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-morocco-terracotta transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10">
-                    <Facebook className="h-6 w-6" />
-                  </a>}
-                {socialLinks.twitter && <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-morocco-terracotta transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10">
-                    <X className="h-6 w-6" />
-                  </a>}
+  const currentYear = new Date().getFullYear();
+  return <footer className="bg-moroccan-dark text-white pt-16 pb-8">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand Information */}
+          <div className="col-span-1 lg:col-span-1">
+            <Link to="/" className="flex items-center space-x-3 mb-5">
+              <div className="bg-moroccan-blue text-white p-2.5 rounded-lg shadow-md">
+                <span className="font-serif text-lg">M</span>
               </div>
-            </div>
-
-            {/* Quick links */}
-            <div className="lg:col-span-2 lg:ml-auto">
-              <h3 className="font-bold text-xl mb-6 text-white border-b border-white/10 pb-2">{t('shop') || 'Shop'}</h3>
-              <ul className="space-y-4">
-                <li>
-                  <Link to="/girls" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('girls') || 'Girls'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/boys" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('boys') || 'Boys'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/baby" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('baby') || 'Baby'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/new-arrivals" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('newArrivals') || 'New Arrivals'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/sale" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('sale') || 'Sale'}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* About links */}
-            <div className="lg:col-span-2">
-              <h3 className="font-bold text-xl mb-6 text-white border-b border-white/10 pb-2">{t('company') || 'Company'}</h3>
-              <ul className="space-y-4">
-                <li>
-                  <Link to="/about" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('aboutUs') || 'About Us'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/sustainability" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('sustainability') || 'Sustainability'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/careers" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('careers') || 'Careers'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/stores" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('stores') || 'Our Stores'}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Customer service */}
-            <div className="lg:col-span-3">
-              <h3 className="font-bold text-xl mb-6 text-white border-b border-white/10 pb-2">{t('customerService') || 'Customer Service'}</h3>
-              <ul className="space-y-4">
-                <li>
-                  <Link to="/contact" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('contactUs') || 'Contact Us'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/faq" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('faqs') || 'FAQs'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/shipping" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('shippingReturns') || 'Shipping & Returns'}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/track-order" className="text-gray-300 hover:text-morocco-terracotta transition-colors hover:pl-1">
-                    {t('trackOrder') || 'Track Order'}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Newsletter subscription (optional) */}
-          <div className="border-t border-white/10 pt-10 pb-6 mb-8">
-            
-          </div>
-
-          {/* Bottom section */}
-          <div className="border-t border-gray-800 py-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              &copy; {year} NajihKids. {t('allRightsReserved') || 'All rights reserved.'}
+              <div className="font-serif text-xl text-white">
+                <span className="text-sky-900">Martil</span>
+                <span className="text-moroccan-gold">Haven</span>
+              </div>
+            </Link>
+            <p className="text-sm mb-6 leading-relaxed text-gray-300">
+              Discover beautiful vacation properties in Martil, Morocco. Experience the perfect blend of Moroccan hospitality and modern luxury on the Mediterranean coast.
             </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-              <Link to="/privacy" className="hover:text-white transition-colors">
-                {t('privacy') || 'Privacy Policy'}
-              </Link>
-              <Link to="/terms" className="hover:text-white transition-colors">
-                {t('terms') || 'Terms of Service'}
-              </Link>
-              <Link to="/cookies" className="hover:text-white transition-colors">
-                {t('cookies') || 'Cookie Policy'}
-              </Link>
+            <div className="flex space-x-5">
+              <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200">
+                <Facebook className="h-5 w-5" />
+                <span className="sr-only">Facebook</span>
+              </a>
+              <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200">
+                <Instagram className="h-5 w-5" />
+                <span className="sr-only">Instagram</span>
+              </a>
+              <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200">
+                <Twitter className="h-5 w-5" />
+                <span className="sr-only">Twitter</span>
+              </a>
             </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-serif mb-6 text-moroccan-gold">Explore</h3>
+            <ul className="space-y-4">
+              <li>
+                <Link to="/" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/properties" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Properties
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/owner-dashboard" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  List Your Property
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h3 className="text-lg font-serif mb-6 text-moroccan-gold">Support</h3>
+            <ul className="space-y-4">
+              <li>
+                <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Cancellation Options
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Safety Information
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-moroccan-gold transition duration-200 flex items-center">
+                  <span className="w-1.5 h-1.5 bg-moroccan-gold rounded-full mr-2"></span>
+                  Privacy Policy
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Information */}
+          <div>
+            <h3 className="text-lg font-serif mb-6 text-moroccan-gold">Contact Us</h3>
+            <address className="not-italic text-gray-300 space-y-4">
+              <p className="flex items-start">
+                <MapPin className="h-5 w-5 mr-3 text-moroccan-gold mt-0.5" />
+                <span>Boulevard Mohammed V<br />Martil, Morocco</span>
+              </p>
+              <p className="flex items-center">
+                <Mail className="h-5 w-5 mr-3 text-moroccan-gold" />
+                <a href="mailto:info@martilhaven.com" className="hover:text-moroccan-gold transition-colors">info@martilhaven.com</a>
+              </p>
+              <p className="flex items-center">
+                <Phone className="h-5 w-5 mr-3 text-moroccan-gold" />
+                <a href="tel:+212-5XX-XX-XX-XX" className="hover:text-moroccan-gold transition-colors">+212 5XX XX XX XX</a>
+              </p>
+            </address>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+          <p>&copy; {currentYear} MartilHaven. All rights reserved.</p>
+          <div className="mt-3 space-x-6">
+            <a href="#" className="hover:text-moroccan-gold transition duration-200">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-moroccan-gold transition duration-200">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-moroccan-gold transition duration-200">
+              Sitemap
+            </a>
           </div>
         </div>
       </div>
